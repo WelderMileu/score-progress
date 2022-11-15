@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Score</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	</head>
+	<body>
+		<nav class="flex items-center py-3 px-10 justify-between shadow">
+			<div class="text-xl font-bold text-gray-500">
+				Score
+			</div>
+			<div class="flex items-center">
+				<div class="pr-10">
+					<p id="score_val" class="text-gray-500">
+						Score: 0
+					</p>
+					<div id="progress_score" class="mt-2 overflow-hidden rounded-full flex"></div>
+					<button id="reset_score" class="mt-3 text-sm h-7 w-32 bg-cyan-600 text-white rounded">Reset Score</button>
+				</div>
+				<div class="user_profile">
+					<img src="./assets/avatar.png" width="50" alt="profile_img">
+				</div>
+			</div>
+		</nav>
+		<main>
+			<div class="p-10">
+				<div class="w-40 h-40 border border-gray-300 rounded-lg flex items-center justify-center">
+					<img src="./assets/score.png" width="100" alt="score">
+				</div>
+				<button id="add_score" class="mt-3 h-10 w-40 bg-cyan-600 rounded-lg text-white active:bg-cyan-700">Score +</button>
+			</div>
+		</main>
+		<script type="text/javascript">
+			const $ = e => document.getElementById(e)
+			
+			let legth_score = 50
+			let score_val = 0
+			let range_score = []
+
+		 	const score_off = '<div class="w-1 h-1 bg-gray-300"></div>'
+		 	const score_on = '<div class="w-1 h-1 bg-cyan-600"></div>' 
+
+		 	function append_score_of() {
+				for (var x = 1; x < legth_score; x++) {
+					range_score.push(score_off)
+				}
+			}
+
+			append_score_of()
+
+			$('progress_score').innerHTML = range_score.join('')
+			console.log(range_score)
+
+			function add_score() {
+				if (score_val == legth_score) {
+					swal("score max", "reset your score on button down")
+				} else {
+					range_score[score_val] = score_on
+					score_val += 1
+					$('score_val').innerHTML = 'Score: ' + score_val
+					$('progress_score').innerHTML = range_score.join('')
+				}
+			}
+
+			function reset_score() {
+				score_val = 0
+				$('score_val').innerHTML = 'Score: ' + score_val + '%'
+				
+				range_score = []
+				append_score_of()
+				
+				$('progress_score').innerHTML = range_score.join('')
+			}
+
+			$('add_score').addEventListener('click', add_score)
+			$('reset_score').addEventListener('click', reset_score)
+		</script>
+	</body>
+</html>
