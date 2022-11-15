@@ -6,7 +6,6 @@
 		<title>Score</title>
 		<script src="https://cdn.tailwindcss.com"></script>
 		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-		<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 	</head>
 	<body>
 		<nav class="flex items-center py-3 px-10 justify-between shadow">
@@ -27,7 +26,7 @@
 			</div>
 		</nav>
 		<main>
-			<div class="p-20 flex items-center justify-center">
+			<div class="px-40 pt-10 flex flex-col items-center justify-center">
 				<div class="w-40 flex flex-col items-center">
 					<img src="./assets/score.png" width="200" alt="score">
 					<div class="mt-5 w-40 h-10 border border-gray-300 rounded-lg flex items-center justify-center">
@@ -35,9 +34,10 @@
 					</div>
 					<button id="sort_score" class="mt-3 h-10 w-40 bg-cyan-600 rounded-lg text-white active:bg-cyan-700">Sort Score</button>
 				</div>
-				<div id="chart" style="height: 300px; width: 50%;" class="ml-40"></div>
+				<canvas id="new_chart" height="4" width="10" class="pt-20"></canvas>
 			</div>
 		</main>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 		<script type="text/javascript">
 			const $ = e => document.getElementById(e)
 			function sleep(delay) {
@@ -61,41 +61,30 @@
 
 			$('progress_score').innerHTML = range_score.join('')
 
-			const chart_val = []
+			const items = []
 			
-			function chart_render() {
-				var limit = legth_score;
-				var y = 0;  
-				var data = []
-				var dataSeries = { type: "line" };
-				var dataPoints = [];
+			
+			const ctx = $("new_chart")
+			const data = {
+			  datasets: [{
+			    label: 'Score - Dataset',
+			    data: items,
+			    backgroundColor: 'rgb(255, 99, 132)'
+			  }]
+			};
 
-				for (var i = 0; i < limit; i += 1) {
-					y += Math.round(Math.random() * 10 - 5);
-					dataPoints.push({
-						x: i,
-						y: y
-					});
-				}
+			const config = {
+			  type: 'bubble',
+			  data: data,
+			  options: {}
+			};
 
+			const chart = new Chart(ctx, config)
+			
 
-				dataSeries.dataPoints = dataPoints;
-				data.push(dataSeries);
-
-				var options = {
-					zoomEnabled: true,
-					animationEnabled: true,
-					title: {
-						text: "Balance score - Panning"
-					},
-					axisY: {
-						lineThickness: 1
-					},
-					data: data  // random data
-				};
-
-				var chart = new CanvasJS.Chart("chart", options);
-				chart.render()
+			function dane() {
+				chart.config.data = data
+				chart.update()
 			}
 
 			
@@ -106,7 +95,7 @@
 					swal("score max", "reset your score on button down")
 				} else {
 					score_val += random_score
-					chart_val.push(score_val) 
+					items.push({x: random_score, y: random_score,r: random_score}) 
 
 					$('random_score').innerHTML = random_score
 					await sleep(1000)
@@ -122,7 +111,7 @@
 					$('progress_score').innerHTML = range_score.join('')
 				}
 
-				window.load(chart_render())
+				dane()
 			}
 
 			function reset_score() {
