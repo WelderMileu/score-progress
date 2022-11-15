@@ -26,11 +26,14 @@
 			</div>
 		</nav>
 		<main>
-			<div class="p-10">
-				<div class="w-40 h-40 border border-gray-300 rounded-lg flex items-center justify-center">
-					<img src="./assets/score.png" width="100" alt="score">
+			<div class="p-20 flex items-center justify-center">
+				<div class="w-40 flex flex-col items-center">
+					<img src="./assets/score.png" width="200" alt="score">
+					<div class="mt-5 w-40 h-10 border border-gray-300 rounded-lg flex items-center justify-center">
+						<p class="text-xl text-gray-500">0</p>
+					</div>
+					<button id="add_score" class="mt-3 h-10 w-40 bg-cyan-600 rounded-lg text-white active:bg-cyan-700">Sort Score</button>
 				</div>
-				<button id="add_score" class="mt-3 h-10 w-40 bg-cyan-600 rounded-lg text-white active:bg-cyan-700">Score +</button>
 			</div>
 		</main>
 		<script type="text/javascript">
