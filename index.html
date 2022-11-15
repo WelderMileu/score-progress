@@ -38,7 +38,9 @@
 		</main>
 		<script type="text/javascript">
 			const $ = e => document.getElementById(e)
-			const sleep = delay => Promisse(resolve => setTimeout(resolve, delay))
+			function sleep(delay) {
+				return new Promise(resolve => setTimeout(resolve, delay));
+			}
 
 			let legth_score = 50
 			let score_val = 0
@@ -57,7 +59,7 @@
 
 			$('progress_score').innerHTML = range_score.join('')
 
-			function sort_score() {
+			async function sort_score() {
 				const random_score = Math.floor(Math.random() * (10 - 1 + 1)) + 1
 
 				if ((score_val + random_score) >= legth_score) {
@@ -65,7 +67,11 @@
 				} else {
 					score_val += random_score
 					$('random_score').innerHTML = random_score
-					
+					await sleep(1000)
+					$('random_score').innerHTML = 0
+
+					await sleep(300)
+
 					for (var x = 0; x < score_val; x++) {
 						range_score[x] = score_on
 					}
