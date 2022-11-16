@@ -10,7 +10,7 @@
 	<body>
 		<nav class="fixed w-full top-0 bg-white flex items-center py-3 px-10 justify-between shadow">
 			<div class="text-xl font-bold text-gray-500">
-				< Score />
+				Sc0r3
 			</div>
 			<div class="flex items-center">
 				<div class="pr-10">
@@ -25,8 +25,16 @@
 				</div>
 			</div>
 		</nav>
-		<main>
-			<div class="px-40 pt-36 flex flex-col items-center justify-center">
+	
+		<main class="mr-32 pt-36 flex flex-row justify-center items-start">
+			<div class="pr-32 pt-10">
+				<div class="rounded-t-lg flex items-center justify-center w-20 h-10 bg-gray-100">
+					<h1 class="text-gray-500 font-bold">Seq.</h1>						
+				</div>
+				<div id="number_s" class="flex flex-col"></div>
+			</div>
+
+			<div class="flex flex-col items-center justify-center">
 				<div class="w-40 flex flex-col items-center">
 					<img src="./assets/score.png" width="200" alt="score">
 					<div class="mt-5 w-40 h-10 border border-gray-300 rounded-lg flex items-center justify-center">
@@ -34,10 +42,8 @@
 					</div>
 					<button id="sort_score" class="mt-3 h-10 w-40 bg-cyan-600 rounded-lg text-white active:bg-cyan-700">Sort Score</button>
 				</div>
-				<canvas id="new_chart" height="4" width="10" class="pt-20"></canvas>
 			</div>
 		</main>
-		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 		<script type="text/javascript">
 			const $ = e => document.getElementById(e)
 			function sleep(delay) {
@@ -61,32 +67,6 @@
 
 			$('progress_score').innerHTML = range_score.join('')
 
-			const items = []
-			
-			
-			const ctx = $("new_chart")
-			const data = {
-			  datasets: [{
-			    label: 'Score - Dataset',
-			    data: items,
-			    backgroundColor: '#0891b2'
-			  }]
-			};
-
-			const config = {
-			  type: 'bubble',
-			  data: data,
-			  options: {}
-			};
-
-			const chart = new Chart(ctx, config)
-			
-
-			function dane() {
-				chart.config.data = data
-				chart.update()
-			}
-
 			
 			async function sort_score() {
 				const random_score = Math.floor(Math.random() * (10 - 1 + 1)) + 1
@@ -95,7 +75,6 @@
 					swal("score max", "reset your score on button down")
 				} else {
 					score_val += random_score
-					items.push({x: random_score, y: random_score,r: random_score}) 
 
 					$('random_score').innerHTML = random_score
 					await sleep(1000)
@@ -109,9 +88,23 @@
 
 					$('score_val').innerHTML = 'Score: ' + score_val
 					$('progress_score').innerHTML = range_score.join('')
-				}
 
-				dane()
+					const number = document.createElement('div');
+					number.classList.add(
+						"w-20", 
+						"h-10", 
+						"border",
+						"text-gray-600",
+						"border-gray-200",
+						"flex",
+						"justify-center",
+						"items-center"
+					)
+
+					number.innerHTML = random_score
+
+					$('number_s').append(number)
+				}
 			}
 
 			function reset_score() {
@@ -122,9 +115,8 @@
 				append_score_of()
 				
 				$('progress_score').innerHTML = range_score.join('')
+				$('number_s').innerHTML = ""
 			}
-
-
 
 			$('sort_score').addEventListener('click', sort_score)
 			$('reset_score').addEventListener('click', reset_score)
